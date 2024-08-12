@@ -37,9 +37,11 @@ export default function App() {
         <ButtonChangeScreen label="TelaInserirDados" goto="TelaInserirDados" styleText={styles.text}/>
         <ButtonChangeScreen label="TelaListaGastos" goto="TelaListaGastos" styleText={styles.text}/>
            */}
-        <TelaDashboard styleText={styles.text}/>
+        {/* <TelaDashboard styleText={styles.text}/> */}
+        <TelaInserirDados styleText={styles.text}/>
+        {/* <TelaListaGastos styleText={styles.text}/> */}
 
-        <ImageViewer placeholderImageSource={PlaceholderImage} />
+        {/* <ImageViewer placeholderImageSource={PlaceholderImage} /> */}
       </View>
       <View style={styles.footerContainer}>
         <Button label="Choose a photo" />

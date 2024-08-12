@@ -1,8 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
+import { View, Text } from "react-native";
 
-const TelaListaGastos = ({styleText}) => {
-  return <Text style={styleText}>TELALISTAGASTOS</Text>;
+const TelaListaGastos = ({ styleText }) => {
+  return (
+    <View>
+      <Text style={styleText}>TÍTULO TELA: TELALISTAGASTOS</Text>
+      <Text style={styleText}>"Lista com todos os valores gastos listados</Text>
+    </View>
+  );
 };
 
 export default TelaListaGastos;
