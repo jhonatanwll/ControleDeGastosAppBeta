@@ -1,43 +1,19 @@
-import React from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import React from 'react';
+import { View, Button, StyleSheet } from 'react-native';
 
-import ButtonChangeScreen from "../components/ButtonChangeScreen";
-import TelaListaGastos from "./TelaListaGastos";
-
-const TelaDashboard = ({ styleText }) => {
+export default function DashboardScreen({ navigation }) {
   return (
-    <View>
-      <Text style={styleText}>TELA DE DASHBOARD</Text>
-      <View>
-        {/* <Text style={styleText}> Lista de Dados aqui</Text> */}
-        <TelaListaGastos styleText={styles.buttonText} />
-      </View>
-      <ButtonChangeScreen
-        label="TelaInserirDados"
-        goto="TelaInserirDados"
-        styleText={styles.buttonText}
-      />
-      {/* 
-        - Lista de gastos do mês
-        - Botão para acessar tela inserir  
-      */}
+    <View style={styles.container}>
+      <Button title="Gastos do Mês" onPress={() => navigation.navigate('GastosMes')} />
+      <Button title="Inserir Dados" onPress={() => navigation.navigate('InserirDados')} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  buttonText: {
-    color: "#fff",
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
-
-export default TelaDashboard;
-
-{
-  /*
-
-TELA DASHBOARD:
-          - Acesso a tela de gastos do mês
-          - Botão para tela de inserção de dados
-        */
-}

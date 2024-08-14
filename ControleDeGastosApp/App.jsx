@@ -1,3 +1,6 @@
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 
@@ -10,52 +13,24 @@ import ButtonChangeScreen from "./components/ButtonChangeScreen";
 
 const PlaceholderImage = require("./assets/images/background-image.png");
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <View>
-        {/* 
-        TELAS: 
-          - Tela DASHBOARD Inicial
-          - Tela para inserir dados
-          - Tela Gastos do mês 
-        
-        TELA DASHBOARD:
-          - Acesso a tela de gastos do mês
-          - Botão para tela de inserção de dados
-        TELA INSERÇÃO DE DADOS:
-          - Quem pagou (duas opções por agora)
-          - Valor pago
-          - Gastos/Ganhos
-          - Data
-          - Descrição
-        TELA GASTOS DO MÊS
-          - Mostra a lista de dados dos valores gastos no mês 
-        */}
-
-        {/* <ButtonChangeScreen label="TelaDashboard" goto="TelaDashboard" styleText={styles.text}/>
-        <ButtonChangeScreen label="TelaInserirDados" goto="TelaInserirDados" styleText={styles.text}/>
-        <ButtonChangeScreen label="TelaListaGastos" goto="TelaListaGastos" styleText={styles.text}/>
-           */}
-        {/* <TelaDashboard styleText={styles.text}/> */}
-        <TelaInserirDados styleText={styles.text}/>
-        {/* <TelaListaGastos styleText={styles.text}/> */}
-
-        {/* <ImageViewer placeholderImageSource={PlaceholderImage} /> */}
-      </View>
-      <View style={styles.footerContainer}>
-        <Button label="Choose a photo" />
-        <Button label="Use this photo" />
-      </View>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer >
+      <Stack.Navigator initialRouteName="InserirDados">
+        <Stack.Screen name="Dashboard" component={TelaDashboard} />
+        <Stack.Screen name="InserirDados" component={TelaInserirDados} />
+        <Stack.Screen name="GastosMes" component={TelaListaGastos} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#25292e",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -67,3 +42,4 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 });
+export default App;
