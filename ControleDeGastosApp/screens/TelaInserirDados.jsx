@@ -7,8 +7,10 @@ import {
   Switch,
   StyleSheet,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TelaInserirDados({ navigation }) {
   const [quemPagou, setQuemPagou] = useState(null);
@@ -38,9 +40,36 @@ export default function TelaInserirDados({ navigation }) {
     // console.log(formattedValue)
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Lógica para salvar os dados
-    navigation.goBack();
+    try {
+      // Cria um objeto com os dados a serem salvos
+      const dados = {
+        quemPagou,
+        valorPago,
+        comoDividirValor,
+        gastoOuGanho,
+        data: data.toLocaleDateString(),
+        descricao,
+      };
+      // Obtém os dados armazenados anteriormente
+      const storedData = await AsyncStorage.getItem("dados");
+      const parsedData = storedData ? JSON.parse(storedData) : [];
+
+      // Adiciona os novos dados à lista existente
+      const newData = [...parsedData, dados];
+
+      // Salva a lista atualizada de volta no AsyncStorage
+      await AsyncStorage.setItem("dados", JSON.stringify(newData));
+
+      Alert.alert("Sucesso", "Dados salvos com sucesso!");
+      console.log(storedData)
+
+      // Navega de volta para a tela anterior
+      navigation.navigate("TelaListaGastos");
+    } catch (error) {
+      Alert.alert(error+"Erro", "Falha ao salvar os dados.");
+    }
   };
 
   return (

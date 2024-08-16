@@ -11,17 +11,15 @@ import TelaInserirDados from "./screens/TelaInserirDados";
 import TelaListaGastos from "./screens/TelaListaGastos";
 import ButtonChangeScreen from "./components/ButtonChangeScreen";
 
-const PlaceholderImage = require("./assets/images/background-image.png");
-
 const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer >
-      <Stack.Navigator initialRouteName="InserirDados">
+      <Stack.Navigator initialRouteName="Dashboard">
         <Stack.Screen name="Dashboard" component={TelaDashboard} />
         <Stack.Screen name="InserirDados" component={TelaInserirDados} />
-        <Stack.Screen name="GastosMes" component={TelaListaGastos} />
+        <Stack.Screen name="TelaListaGastos" component={TelaListaGastos} />
       </Stack.Navigator>
     </NavigationContainer>
   );
