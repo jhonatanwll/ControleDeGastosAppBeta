@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer >
-      <Stack.Navigator initialRouteName="Dashboard">
+      <Stack.Navigator initialRouteName="InserirDados">
         <Stack.Screen name="Dashboard" component={TelaDashboard} />
         <Stack.Screen name="InserirDados" component={TelaInserirDados} />
         <Stack.Screen name="GastosMes" component={TelaListaGastos} />

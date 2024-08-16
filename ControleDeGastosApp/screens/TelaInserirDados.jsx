@@ -6,15 +6,37 @@ import {
   Text,
   Switch,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-const TelaInserirDados = ({ styleText }) => {
+export default function TelaInserirDados({ navigation }) {
   const [quemPagou, setQuemPagou] = useState(null);
   const [valorPago, setValorPago] = useState("");
   const [comoDividirValor, setComoDividirValor] = useState(null);
   const [gastoOuGanho, setGastoOuGanho] = useState(null);
-  const [data, setData] = useState("");
+  const [data, setData] = useState(new Date());
   const [descricao, setDescricao] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || data;
+    setShowDatePicker(false);
+    setData(currentDate);
+  };
+
+  const formatarMoeda = (valor) => {
+    if (!valor) return "0.00";
+    const valorNumerico = valor.replace(/[^0-9]/g, "");
+    const valorFormatado = (valorNumerico / 100).toFixed(2);
+    return valorFormatado.replace(/\d(?=(d{3})+\.)/g, "#&,").replace(".", ",");
+  };
+
+  const handleMudancaValor = (text) => {
+    const formattedValue = formatarMoeda(text);
+    setValorPago(`R$ ${formattedValue}`);
+    // console.log(formattedValue)
+  };
 
   const handleSave = () => {
     // Lógica para salvar os dados
@@ -25,13 +47,12 @@ const TelaInserirDados = ({ styleText }) => {
     <View style={styles.container}>
       <Text>TELA TÍTULO: TELAINSERIRDADOS</Text>
 
-      <Text>VALOR PAGO:</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Digite o valor PAGO"
+        style={styles.inputValor}
+        placeholder="R$ 0,00"
         keyboardType="numeric"
         value={valorPago}
-        onChangeText={setValorPago}
+        onChangeText={handleMudancaValor}
       />
       <Text>QUEM PAGOU?</Text>
       <View style={styles.buttonGroup}>
@@ -61,12 +82,24 @@ const TelaInserirDados = ({ styleText }) => {
       </View>
 
       <Text>DATA:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Digite a data"
-        value={data}
-        onChangeText={setData}
-      />
+      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+        <TextInput
+          style={styles.input}
+          placeholder="Data"
+          value={data.toLocaleDateString()}
+          editable={false}
+        />
+      </TouchableOpacity>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={data}
+          mode="date"
+          display="default"
+          onChange={onChangeDate}
+        />
+      )}
+
       <Text>DESCRIÇÃO:</Text>
       <TextInput
         style={styles.input}
@@ -78,7 +111,7 @@ const TelaInserirDados = ({ styleText }) => {
       <Button title="Salvar" onPress={handleSave} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +120,12 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     padding: 10,
-    // borderRadius: 10,
+    marginVertical: 10,
+  },
+  inputValor: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 50,
     marginVertical: 10,
   },
   switchContainer: {
@@ -100,9 +138,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
-
-export default TelaInserirDados;
-
 {
   /* 
 
