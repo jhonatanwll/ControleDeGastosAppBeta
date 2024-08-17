@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -7,19 +7,23 @@ import {
   Switch,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TelaInserirDados({ navigation }) {
-  const [quemPagou, setQuemPagou] = useState(null);
+  const [quemPagou, setQuemPagou] = useState("Nome1");
   const [valorPago, setValorPago] = useState("");
-  const [comoDividirValor, setComoDividirValor] = useState(null);
-  const [gastoOuGanho, setGastoOuGanho] = useState(null);
+  const [comoDividirValor, setComoDividirValor] = useState(false);
+  const [gastoOuGanho, setGastoOuGanho] = useState(false);
   const [data, setData] = useState(new Date());
   const [descricao, setDescricao] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  useEffect(() => {
+    console.log("a");
+  }, ["a"]);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || data;
@@ -63,12 +67,12 @@ export default function TelaInserirDados({ navigation }) {
       await AsyncStorage.setItem("dados", JSON.stringify(newData));
 
       Alert.alert("Sucesso", "Dados salvos com sucesso!");
-      console.log(storedData)
+      console.log(storedData);
 
       // Navega de volta para a tela anterior
       navigation.navigate("TelaListaGastos");
     } catch (error) {
-      Alert.alert(error+"Erro", "Falha ao salvar os dados.");
+      Alert.alert(error + "Erro", "Falha ao salvar os dados.");
     }
   };
 

@@ -1,11 +1,25 @@
-import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+
+import TelaListaGastos from "./TelaListaGastos.jsx";
 
 export default function DashboardScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Button title="Gastos do Mês" onPress={() => navigation.navigate('TelaListaGastos')} />
-      <Button title="Inserir Dados" onPress={() => navigation.navigate('InserirDados')} />
+      <View style={styles.block}>
+        <Button
+          style={styles.block}
+          title="Gastos do Mês"
+          onPress={() => navigation.navigate("TelaListaGastos")}
+        />
+      </View>
+      <View style={styles.block}>
+        <Button
+          style={styles.button}
+          title="Inserir Dados"
+          onPress={() => navigation.navigate("InserirDados")}
+        />
+      </View>
     </View>
   );
 }
@@ -13,7 +27,15 @@ export default function DashboardScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
   },
+  block: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+  }
 });
