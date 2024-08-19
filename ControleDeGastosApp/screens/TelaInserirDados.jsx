@@ -20,6 +20,7 @@ export default function TelaInserirDados({ navigation }) {
   const [data, setData] = useState(new Date());
   const [descricao, setDescricao] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [inputBorderColor, setInputBorderColor] = useState(false); // estado para controlar a cor da borda do valor
 
   useEffect(() => {
     console.log("a");
@@ -45,6 +46,17 @@ export default function TelaInserirDados({ navigation }) {
   };
 
   const handleSave = async () => {
+    // Verifica se o campo valorPago está vazio
+    if(!valorPago || valorPago === "R$ 0,00") {
+      // Define a cor da borda como vermelha
+      setInputBorderColor(true);
+      //Restaura a cor original da borda após 1 segundo
+      setTimeout(() => {
+        setInputBorderColor(false);
+      }, 1000);
+      return;
+    }
+    
     // Lógica para salvar os dados
     try {
       // Cria um objeto com os dados a serem salvos
@@ -81,7 +93,7 @@ export default function TelaInserirDados({ navigation }) {
       <Text>TELA TÍTULO: TELAINSERIRDADOS</Text>
 
       <TextInput
-        style={styles.inputValor}
+        style={[styles.inputValor, { borderWidth: inputBorderColor ? 1:0 }]}
         placeholder="R$ 0,00"
         keyboardType="numeric"
         value={valorPago}
@@ -160,6 +172,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 50,
     marginVertical: 10,
+    borderColor: "red",
+    borderRadius: 5,
   },
   switchContainer: {
     flexDirection: "row",
