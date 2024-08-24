@@ -22,6 +22,10 @@ export default function TelaInserirDados({ navigation }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [inputBorderColor, setInputBorderColor] = useState(false); // estado para controlar a cor da borda do valor
 
+// OS VALORES INICIAIS SERÃO PEGOS DE UMA LISTA.
+// QUANDO TIVER VINDO DA TELA DE LISTA DE GASTOS COM DADOS PARA EDIÇÃO: COLOCAR ESSES DADOS INICIAIS PARA SEREM ALTERADOS
+// QUANDO TIVER VINDO DA TELA DASHBOARD OS DADOS INICIAIS PRECISAM ESTAR ZERADOS.
+
   useEffect(() => {
     console.log("a");
   }, ["a"]);
@@ -84,7 +88,7 @@ export default function TelaInserirDados({ navigation }) {
       // Navega de volta para a tela anterior
       navigation.navigate("TelaListaGastos");
     } catch (error) {
-      Alert.alert(error + "Erro", "Falha ao salvar os dados.");
+      Alert.alert("Erro: " + error, "Falha ao salvar os dados.");
     }
   };
 
