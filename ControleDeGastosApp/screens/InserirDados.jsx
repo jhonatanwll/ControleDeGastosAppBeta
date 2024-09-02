@@ -13,44 +13,64 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TelaInserirDados({ route, navigation }) {
-  const { gasto, editIndex } = route.params || {}; // Recebe os dados e o índice
+  const { gasto, editIndex } = route.params || {};
   const [quemPagou, setQuemPagou] = useState(gasto ? gasto.quemPagou : "Nome1");
   const [valorPago, setValorPago] = useState(gasto ? gasto.valorPago : "");
-  const [comoDividirValor, setComoDividirValor] = useState(
-    gasto ? gasto.comoDividirValor : false
+  const [divisaoValor, setDivisaoValor] = useState(
+    gasto ? gasto.divisaoValor : false
   );
-  const [gastoOuGanho, setGastoOuGanho] = useState(
-    gasto ? gasto.gastoOuGanho : false
-  );
+  const [tipo, setTipo] = useState(gasto ? gasto.tipo : false);
   const [data, setData] = useState(gasto ? new Date(gasto.data) : new Date());
   const [descricao, setDescricao] = useState(gasto ? gasto.descricao : "");
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [inputBorderColor, setInputBorderColor] = useState(false);
+  const [mostrarSeletorData, setmostrarSeletorData] = useState(false);
 
+  /*
+  // OS VALORES INICIAIS SERÃO PEGOS DE UMA LISTA.
+  // QUANDO TIVER VINDO DA TELA DE LISTA DE GASTOS COM DADOS PARA EDIÇÃO: COLOCAR ESSES DADOS INICIAIS PARA SEREM ALTERADOS
+  // QUANDO TIVER VINDO DA TELA DASHBOARD OS DADOS INICIAIS PRECISAM ESTAR ZERADOS.
+
+  //   useEffect(() => {
+  //     valoresIniciais()
+  //   }, [])
+  // const definirValores = {
+  //     quemPagou: "Nome1",
+  //     valorPago: 13,
+  //     divisaoValor: true,
+  //     tipo: true,
+  //     data: "2024-08-01",
+  //     descricao: "Texto...",
+  //   }
+  //   // Outros itens de exemplo...
+  // useEffect(()=>{
+  //   valoresIniciais();
+  // }, [])
+
+  // const valoresIniciais = () => {
+  //   const valores = definirValores;
+  //   setQuemPagou(valores.quemPagou);
+  //   setValorPago(valores.valorPago);
+  //   setDivisaoValor(valores.divisaoValor);
+  //   setTipo(valores.tipo);
+  //   setData(valores.data);
+  //   setDescricao(valores.descricao);
+  //   setmostrarSeletorData(false);
+  // };
+*/
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || data;
-    setShowDatePicker(false);
+    setmostrarSeletorData(false);
     setData(currentDate);
   };
 
-  const formatarMoeda = (valor) => {
-    if (!valor) return "0.00";
-    const valorNumerico = valor.replace(/[^0-9]/g, "");
-    const valorFormatado = (valorNumerico / 100).toFixed(2);
-    return valorFormatado.replace(/\d(?=(d{3})+\.)/g, "#&,").replace(".", ",");
-  };
-
-  const handleMudancaValor = (text) => {
-    const formattedValue = formatarMoeda(text);
-    setValorPago(`R$ ${formattedValue}`);
+  const handleMudancaValor = (txt) => {
+    //formatar valor
+    setValorPago(txt);
   };
 
   const handleSave = async () => {
-    if (!valorPago || valorPago === "R$ 0,00") {
-      setInputBorderColor(true);
-      setTimeout(() => {
-        setInputBorderColor(false);
-      }, 1000);
+    // Salvar
+    if (!valorPago || valorPago === "0") {
+      Alert.alert("Insira um valor válido.");
       return;
     }
 
@@ -58,19 +78,19 @@ export default function TelaInserirDados({ route, navigation }) {
       const dados = {
         quemPagou,
         valorPago,
-        comoDividirValor,
-        gastoOuGanho,
+        divisaoValor,
+        tipo,
         data: data.toLocaleDateString(),
         descricao,
       };
-      const storedData = await AsyncStorage.getItem("dados");
-      let parsedData = storedData ? JSON.parse(storedData) : [];
+
+      const dadosSalvos = await AsyncStorage.getItem("dados");
+      let parsedData = dadosSalvos ? JSON.parse(dadosSalvos) : [];
 
       if (editIndex !== null && editIndex !== undefined) {
-        // Atualiza o item existente
+        // Atualiza o item existente apenas
         parsedData[editIndex] = dados;
       } else {
-        // Adiciona um novo item
         parsedData.push(dados);
       }
 
@@ -84,15 +104,16 @@ export default function TelaInserirDados({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={StyleSheet.container}>
+      <Text>Valor pago:</Text>
       <TextInput
-        style={[styles.inputValor, { borderWidth: inputBorderColor ? 1 : 0 }]}
         placeholder="R$ 0,00"
         keyboardType="numeric"
         value={valorPago}
         onChangeText={handleMudancaValor}
       />
-      <Text>QUEM PAGOU?</Text>
+
+      <Text>Quem pagou:</Text>
       <View style={styles.buttonGroup}>
         <Button
           title="Nome1"
@@ -106,22 +127,22 @@ export default function TelaInserirDados({ route, navigation }) {
         />
       </View>
 
-      <Text>COMO SERÁ DIVIDIDO:</Text>
+      <Text>Divisão de Valor: {divisaoValor}</Text>
       <View style={styles.switchContainer}>
         <Text>Igualmente</Text>
-        <Switch value={comoDividirValor} onValueChange={setComoDividirValor} />
+        <Switch value={divisaoValor} onValueChange={setDivisaoValor} />
         <Text>Por Porcentagem</Text>
       </View>
-      
+
+      <Text>Tipo:</Text>
       <View style={styles.switchContainer}>
         <Text>Gasto</Text>
-        <Switch value={gastoOuGanho} onValueChange={setGastoOuGanho} />
+        <Switch value={tipo} onValueChange={setTipo} />
         <Text>Ganho</Text>
       </View>
 
-
       <Text>DATA:</Text>
-      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+      <TouchableOpacity onPress={() => setmostrarSeletorData(true)}>
         <TextInput
           style={styles.input}
           placeholder="Data"
@@ -130,7 +151,7 @@ export default function TelaInserirDados({ route, navigation }) {
         />
       </TouchableOpacity>
 
-      {showDatePicker && (
+      {mostrarSeletorData && (
         <DateTimePicker
           value={data}
           mode="date"

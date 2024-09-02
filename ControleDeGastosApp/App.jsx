@@ -8,6 +8,7 @@ import Button from "./components/Button";
 import ImageViewer from "./components/ImageViewer";
 import TelaDashboard from "./screens/TelaDashboard";
 import TelaInserirDados from "./screens/TelaInserirDados";
+import InserirDados from "./screens/InserirDados";
 import TelaListaGastos from "./screens/TelaListaGastos";
 import ButtonChangeScreen from "./components/ButtonChangeScreen";
 
@@ -16,9 +17,10 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer >
-      <Stack.Navigator initialRouteName="Dashboard">
+      <Stack.Navigator initialRouteName="TelaDashboard">
         <Stack.Screen name="Dashboard" component={TelaDashboard} />
-        <Stack.Screen name="InserirDados" component={TelaInserirDados} />
+        <Stack.Screen name="TelaInserirDados" component={TelaInserirDados} />
+        <Stack.Screen name="InserirDados" component={InserirDados} />
         <Stack.Screen name="TelaListaGastos" component={TelaListaGastos} />
       </Stack.Navigator>
     </NavigationContainer>

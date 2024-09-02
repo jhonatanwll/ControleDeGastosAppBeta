@@ -16,7 +16,14 @@ export default function DashboardScreen({ navigation }) {
       <View style={styles.block}>
         <Button
           style={styles.button}
-          title="Inserir Dados"
+          title="TelaInserirDados"
+          onPress={() => navigation.navigate("TelaInserirDados")}
+        />
+      </View>
+      <View style={styles.block}>
+        <Button
+          style={styles.button}
+          title="InserirDados"
           onPress={() => navigation.navigate("InserirDados")}
         />
       </View>

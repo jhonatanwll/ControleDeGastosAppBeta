@@ -3,7 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  TextInput,
   Button,
   TouchableOpacity,
   StyleSheet,
@@ -13,13 +12,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TelaListaGastos({ navigation }) {
   const [gastos, setGastos] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editData, setEditData] = useState({
-    quemPagou: "",
-    valorPago: "",
-    data: "",
-    descricao: "",
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,8 +28,6 @@ export default function TelaListaGastos({ navigation }) {
   }, []);
 
   const handleEdit = (index) => {
-    setEditIndex(index);
-    setEditData(gastos[index]);
     navigation.navigate("TelaInserirDados", {
       gasto: gastos[index],
       editIndex: index,
@@ -58,16 +48,23 @@ export default function TelaListaGastos({ navigation }) {
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => handleEdit(index)}>
+      <View>
         <Text style={styles.itemText}>Quem pagou: {item.quemPagou}</Text>
         <Text style={styles.itemText}>Valor: {item.valorPago}</Text>
         <Text style={styles.itemText}>
-          Tipo: {item.gastos ? "Gasto" : "Ganho"}
+          Tipo: {item.gastoOuGanho ? "Gasto" : "Ganho"}
         </Text>
         <Text style={styles.itemText}>Data: {item.data}</Text>
         <Text style={styles.itemText}>Descrição: {item.descricao}</Text>
-      </TouchableOpacity>
-      <Button title="Excluir" onPress={() => handleDelete(index)} color="red" />
+      </View>
+      <View style={styles.buttonGroup}>
+        <Button title="Editar" onPress={() => handleEdit(index)} />
+        <Button
+          title="Excluir"
+          onPress={() => handleDelete(index)}
+          color="red"
+        />
+      </View>
     </View>
   );
 
@@ -99,6 +96,11 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 120, // Ajuste o tamanho conforme necessário
   },
   title: {
     fontWeight: "bold",
